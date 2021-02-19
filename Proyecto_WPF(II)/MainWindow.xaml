@@ -1,0 +1,50 @@
+﻿<Window x:Class="Proyecto_WPF_II_.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Proyecto_WPF_II_"
+        xmlns:clases="clr-namespace:Proyecto_WPF_II_.Clases"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="900">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type clases:Pelicula}">
+            <DockPanel Background="#FEDA7F" Width="200" Height="300" Margin="5">
+                <StackPanel DockPanel.Dock="Bottom">
+                    <TextBlock Text="{Binding Titulo}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Año}" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding Genero}"/>
+                        <TextBlock Text=" / "/>
+                        <TextBlock Text="{Binding Calificacion}"/>
+                    </StackPanel>
+                   
+                </StackPanel>
+                <Image Source="{Binding Cartel}" Stretch="Fill"/>
+            </DockPanel>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Grid>
+        <TabControl>
+            <TabItem Header="Películas Proyección">
+                <DockPanel>
+                    <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding Path=ListaPeliculas}" SelectedItem="{Binding Path=PeliculaSeleccionada}"
+                         Padding="10">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel></WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </DockPanel>
+            </TabItem>
+            <TabItem>
+                
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
+</Window>
