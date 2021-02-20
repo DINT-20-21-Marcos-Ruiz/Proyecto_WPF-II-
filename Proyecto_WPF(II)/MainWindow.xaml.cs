@@ -27,5 +27,33 @@ namespace Proyecto_WPF_II_
             InitializeComponent();
             DataContext = _vm;
         }
+
+        private void AñadirSala_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_vm.ComprobarNumSala(numeroSala_TextBlock.Text))
+            {
+                MessageBox.Show("¡EL NÚMERO DE SALA YA EXISTE!","ERROR", MessageBoxButton.OK, MessageBoxImage.Information);
+            }else _vm.AñadirSala();
+
+        }
+
+        private void AñadirSala_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _vm.SalaFormOk();
+        }
+
+        private void ModificarSala_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_vm.ComprobarNumSala(numeroSala_TextBlock.Text))
+            {
+                MessageBox.Show("¡EL NÚMERO DE SALA YA EXISTE!", "ERROR", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else _vm.ModificarSala();
+        }
+
+        private void ModificarSala_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _vm.HayPersonaSeleccionada();
+        }
     }
 }

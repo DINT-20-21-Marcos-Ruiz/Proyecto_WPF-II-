@@ -4,35 +4,65 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Proyecto_WPF_II_"
-        xmlns:clases="clr-namespace:Proyecto_WPF_II_.Clases"
+        xmlns:clases="clr-namespace:Proyecto_WPF_II_.POJO"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900">
+        Title="Gestión Cine" Height="600" Width="900" Icon="Film.ico">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:CustomCommands.AñadirSala"
+                        Executed="AñadirSala_Executed"
+                        CanExecute="AñadirSala_CanExecute">
+        </CommandBinding>
+        <CommandBinding Command="local:CustomCommands.ModificarSala"
+                        Executed="ModificarSala_Executed"
+                        CanExecute="ModificarSala_CanExecute">
+        </CommandBinding>
+    </Window.CommandBindings>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type clases:Pelicula}">
-            <DockPanel Background="#FEDA7F" Width="200" Height="300" Margin="5">
-                <StackPanel DockPanel.Dock="Bottom">
-                    <TextBlock Text="{Binding Titulo}" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding Año}" HorizontalAlignment="Center"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding Genero}"/>
-                        <TextBlock Text=" / "/>
-                        <TextBlock Text="{Binding Calificacion}"/>
+        <Style TargetType="TextBlock" x:Key="cartelera_TextBlock_Style">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#FF55AA"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="salas_textBox_Style">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+        <Style TargetType="Button" x:Key="salas_button_Style">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="80"/>
+        </Style>
+        <DataTemplate DataType="{x:Type clases:Pelicula}" x:Key="RF1">
+            <Border Width="250" Height="350" Margin="5">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="3"/>
+                </Border.Effect>
+                <DockPanel Background="#FEDA7F" >
+                    <StackPanel DockPanel.Dock="Bottom">
+                        <TextBlock Text="{Binding Titulo}" HorizontalAlignment="Center" Style="{StaticResource cartelera_TextBlock_Style}"/>
+                        <TextBlock Text="{Binding Año}" HorizontalAlignment="Center" Style="{StaticResource cartelera_TextBlock_Style}"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding Genero}" Style="{StaticResource cartelera_TextBlock_Style}"/>
+                            <TextBlock Text=" / "/>
+                            <TextBlock Text="{Binding Calificacion}" Style="{StaticResource cartelera_TextBlock_Style}"/>
+                        </StackPanel>
+
                     </StackPanel>
-                   
-                </StackPanel>
-                <Image Source="{Binding Cartel}" Stretch="Fill"/>
-            </DockPanel>
+                    <Image Source="{Binding Cartel}" Stretch="Fill"/>
+                </DockPanel>
+            </Border>
+            
         </DataTemplate>
     </Window.Resources>
-    
-    <Grid>
-        <TabControl>
+
+    <Grid Background="AliceBlue">
+        <TabControl >
             <TabItem Header="Películas Proyección">
-                <DockPanel>
-                    <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                <DockPanel Margin="5">
+                    <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ItemTemplate="{StaticResource RF1}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ItemsSource="{Binding Path=ListaPeliculas}" SelectedItem="{Binding Path=PeliculaSeleccionada}"
-                         Padding="10">
+                         Padding="5">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel></WrapPanel>
@@ -41,8 +71,52 @@
                     </ListBox>
                 </DockPanel>
             </TabItem>
-            <TabItem>
-                
+            <TabItem Header="Gestión Salas">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ItemTemplate="{StaticResource RF1}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding Path=ListaSalas}" SelectedItem="{Binding Path=SalaSeleccionada}"
+                         Padding="5" Margin="0,0,30,0">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel></WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                    <Border Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1" Padding="20" Height="200" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Número"/>
+                            <TextBlock Text="Capacidad" Grid.Row="1"/>
+                            <TextBlock Text="Disponible" Grid.Row="2"/>
+                            <TextBox x:Name="numeroSala_TextBlock" Grid.Column="1" Text="{Binding SalaFormulario.Numero, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource salas_textBox_Style}"/>
+                            <TextBox x:Name="capacidadSala_TextBlock" Grid.Column="2" Grid.Row="1" Text="{Binding SalaFormulario.Capacidad, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource salas_textBox_Style}"/>
+                            <TextBox x:Name="disponibleSala_TextBlock" Grid.Column="2" Grid.Row="2" Text="{Binding SalaFormulario.Disponible, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource salas_textBox_Style}"/>
+                            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Row="3" HorizontalAlignment="Right">
+                                <Button Content="Modificar" Command="local:CustomCommands.ModificarSala" Style="{StaticResource salas_button_Style}" Margin="0,0,5,0"/>
+                                <Button Content="Añadir" Command="local:CustomCommands.AñadirSala" Style="{StaticResource salas_button_Style}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    
+                    
+                </Grid>
             </TabItem>
         </TabControl>
         

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_WPF_II_.Clases
+namespace Proyecto_WPF_II_.POJO
 {
-    class Pelicula : INotifyPropertyChanged
+    public class Pelicula : INotifyPropertyChanged
     {
         public  int IdPelicula { get; set; }
         public string Titulo { get; set; }
