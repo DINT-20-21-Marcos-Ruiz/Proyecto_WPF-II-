@@ -15,7 +15,6 @@ namespace Proyecto_WPF_II_
             typeof(CustomCommands),
             new InputGestureCollection
             {
-                new KeyGesture(Key.E,ModifierKeys.Control)
             }
             );
         public static readonly RoutedUICommand ModificarSala = new RoutedUICommand(
@@ -24,9 +23,49 @@ namespace Proyecto_WPF_II_
             typeof(CustomCommands),
             new InputGestureCollection
             {
-                new KeyGesture(Key.S,ModifierKeys.Control)
             }
             );
+        public static readonly RoutedUICommand GuardarSala = new RoutedUICommand(
+            "GuardarSala",
+            "GuardarSala",
+            typeof(CustomCommands),
+            new InputGestureCollection
+            {
+            }
+            );
+        public static readonly RoutedUICommand ModificarSesion = new RoutedUICommand(
+            "ModificarSesion",
+            "ModificarSesion",
+            typeof(CustomCommands),
+            new InputGestureCollection
+            {
+            }
+            );
+        public static readonly RoutedUICommand AñadirSesion = new RoutedUICommand(
+            "AñadirSesion",
+            "AñadirSesion",
+            typeof(CustomCommands),
+            new InputGestureCollection
+            {
+            }
+            );
+        public static readonly RoutedUICommand EliminarSesion = new RoutedUICommand(
+            "EliminarSesion",
+            "EliminarSesion",
+            typeof(CustomCommands),
+            new InputGestureCollection
+            {      
+            }
+            );
+        public static readonly RoutedUICommand GuardarSesion = new RoutedUICommand(
+            "GuardarSesion",
+            "GuardarSesion",
+            typeof(CustomCommands),
+            new InputGestureCollection
+            {
+            }
+            );
+
 
     }
 }

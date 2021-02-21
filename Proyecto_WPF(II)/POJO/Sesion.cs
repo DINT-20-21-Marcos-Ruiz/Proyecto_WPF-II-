@@ -16,7 +16,7 @@ namespace Proyecto_WPF_II_.POJO
 
         public Sesion()
         {
-
+            Hora = "";
         }
 
         public Sesion(int idSesion, int pelicula, int sala, string hora)
@@ -25,6 +25,14 @@ namespace Proyecto_WPF_II_.POJO
             Pelicula = pelicula;
             Sala = sala;
             Hora = hora;
+        }
+
+        public Sesion(Sesion sesionSeleccionada)
+        {
+            IdSesion = sesionSeleccionada.IdSesion;
+            Pelicula = sesionSeleccionada.Pelicula;
+            Sala = sesionSeleccionada.Sala;
+            Hora = sesionSeleccionada.Hora;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

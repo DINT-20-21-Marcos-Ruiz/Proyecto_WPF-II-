@@ -87,7 +87,7 @@ namespace Proyecto_WPF_II_
             _conexion.Open();
             _comando = _conexion.CreateCommand();
 
-            _comando.CommandText = "INSERT INTO sesiones VALUES (@pelicula,@sala,@hora)";
+            _comando.CommandText = "INSERT INTO sesiones VALUES (null,@pelicula,@sala,@hora)";
             _comando.Parameters.Add("@pelicula", SqliteType.Integer);
             _comando.Parameters.Add("@sala", SqliteType.Integer);
             _comando.Parameters.Add("@hora", SqliteType.Text);
@@ -142,6 +142,16 @@ namespace Proyecto_WPF_II_
 
             return resultado;
         }
+        public int ComprobarNumSesiones(string idSala)
+        {
+            int cantidad = 0;
+            _conexion.Open();
+            _comando = _conexion.CreateCommand();
+            _comando.CommandText = "SELECT COUNT(*) FROM sesiones WHERE sala="+idSala+" GROUP BY sala";
+            cantidad = Convert.ToInt32(_comando.ExecuteScalar());
+
+            return cantidad;
+        }
 
         //SALAS
         public void InsertarSala(Sala salaFormulario)
@@ -149,7 +159,7 @@ namespace Proyecto_WPF_II_
             _conexion.Open();
             _comando = _conexion.CreateCommand();
 
-            _comando.CommandText = "INSERT INTO salas VALUES(@numero,@capacidad,@disponible)";
+            _comando.CommandText = "INSERT INTO salas VALUES(null,@numero,@capacidad,@disponible)";
             _comando.Parameters.Add("@numero", SqliteType.Text);
             _comando.Parameters.Add("@capacidad", SqliteType.Integer);
             _comando.Parameters.Add("@disponible", SqliteType.Integer);
@@ -223,6 +233,33 @@ namespace Proyecto_WPF_II_
 
             return existe;
         }
+
+        public Boolean ComprobarSalaDisponible(string numSesion)
+        {
+            Boolean existe = false;
+            _conexion.Open();
+            _comando = _conexion.CreateCommand();
+            _comando.CommandText = "SELECT * FROM salas";
+            SqliteDataReader lector = _comando.ExecuteReader();
+
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    if (lector.GetString(0) == numSesion)
+                    {
+                        if(lector.GetBoolean(3) == true)
+                        {
+                            existe = true;
+                        }
+                    }
+                }
+            }
+            lector.Close();
+            _conexion.Close();
+
+            return existe;
+        }    
 
         //VENTAS
         public void InsertarVenta(Venta ventaFormulario)

@@ -9,12 +9,30 @@
         Title="Gestión Cine" Height="600" Width="900" Icon="Film.ico">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.AñadirSala"
-                        Executed="AñadirSala_Executed"
-                        CanExecute="AñadirSala_CanExecute">
+                        Executed="AñadirSala_Executed">
         </CommandBinding>
         <CommandBinding Command="local:CustomCommands.ModificarSala"
                         Executed="ModificarSala_Executed"
                         CanExecute="ModificarSala_CanExecute">
+        </CommandBinding>
+        <CommandBinding Command="local:CustomCommands.GuardarSala"
+                        Executed="GuardarSala_Executed"
+                        CanExecute="GuardarSala_CanExecute">
+        </CommandBinding>
+        <CommandBinding Command="local:CustomCommands.ModificarSesion"
+                        Executed="ModificarSesion_Executed"
+                        CanExecute="ModificarSesion_CanExecute">
+        </CommandBinding>
+        <CommandBinding Command="local:CustomCommands.AñadirSesion"
+                        Executed="AñadirSesion_Executed">
+        </CommandBinding>
+        <CommandBinding Command="local:CustomCommands.EliminarSesion"
+                        Executed="EliminarSesion_Executed"
+                        CanExecute="EliminarSesion_CanExecute">
+        </CommandBinding>
+        <CommandBinding Command="local:CustomCommands.GuardarSesion"
+                        Executed="GuardarSesion_Executed"
+                        CanExecute="GuardarSesion_CanExecute">
         </CommandBinding>
     </Window.CommandBindings>
     <Window.Resources>
@@ -24,11 +42,23 @@
             <Setter Property="Foreground" Value="#FF55AA"/>
             <Setter Property="FontFamily" Value="Times New Roman"/>
         </Style>
-        <Style TargetType="TextBox" x:Key="salas_textBox_Style">
+        <Style TargetType="TextBlock" x:Key="salas_TextBlock_Style">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="DarkBlue"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="sesiones_TextBlock_Style">
+            <Setter Property="FontWeight" Value="ExtraBlack"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#FFFFBD6D"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="form_textBox_Style">
             <Setter Property="Height" Value="20"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
-        <Style TargetType="Button" x:Key="salas_button_Style">
+        <Style TargetType="Button" x:Key="commands_button_Style">
             <Setter Property="Height" Value="20"/>
             <Setter Property="Width" Value="80"/>
         </Style>
@@ -51,7 +81,54 @@
                     <Image Source="{Binding Cartel}" Stretch="Fill"/>
                 </DockPanel>
             </Border>
-            
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type clases:Sala}" x:Key="RF2">
+            <Border Width="200" Height="150" Margin="5" BorderThickness="1" BorderBrush="Firebrick" Padding="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="ID Sala:" Style="{StaticResource salas_TextBlock_Style}"/>
+                    <TextBlock Text="Número Sala:" Grid.Row="1" Style="{StaticResource salas_TextBlock_Style}"/>
+                    <TextBlock Text="Capacidad:" Grid.Row="2" Style="{StaticResource salas_TextBlock_Style}"/>
+                    <TextBlock Text="Disponible:" Grid.Row="3" Style="{StaticResource salas_TextBlock_Style}"/>
+                    <TextBlock Text="{Binding IdSala}"  Style="{StaticResource salas_TextBlock_Style}" Grid.Column="1"/>
+                    <TextBlock Text="{Binding Numero}"  Style="{StaticResource salas_TextBlock_Style}" Grid.Column="1" Grid.Row="1"/>
+                    <TextBlock Text="{Binding Capacidad}"  Style="{StaticResource salas_TextBlock_Style}" Grid.Column="1" Grid.Row="2"/>
+                    <TextBlock Text="{Binding Disponible}"  Style="{StaticResource salas_TextBlock_Style}" Grid.Column="1" Grid.Row="3"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type clases:Sesion}" x:Key="RF3">
+            <Border Width="200" Height="150" Margin="5" BorderThickness="1" BorderBrush="Firebrick" Padding="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="ID Sesion:" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="ID Película:" Grid.Row="1" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="ID Sala:" Grid.Row="2" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="Hora:" Grid.Row="3" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="{Binding IdSesion}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1"/>
+                    <TextBlock Text="{Binding Pelicula}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="1"/>
+                    <TextBlock Text="{Binding Sala}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="2"/>
+                    <TextBlock Text="{Binding Hora}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="3"/>
+                </Grid>
+            </Border>
         </DataTemplate>
     </Window.Resources>
 
@@ -80,16 +157,23 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ItemTemplate="{StaticResource RF1}"
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                            <Button Content="Modificar" Command="local:CustomCommands.ModificarSala" Style="{StaticResource commands_button_Style}" Margin="0,0,5,0"/>
+                            <Button Content="Añadir" Command="local:CustomCommands.AñadirSala" Style="{StaticResource commands_button_Style}"/>
+                        </StackPanel>
+                        <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ItemTemplate="{StaticResource RF2}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ItemsSource="{Binding Path=ListaSalas}" SelectedItem="{Binding Path=SalaSeleccionada}"
-                         Padding="5" Margin="0,0,30,0">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel></WrapPanel>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListBox>
+                         Padding="5" Margin="0,0,30,5">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel></WrapPanel>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </DockPanel>
+                    
                     <Border Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1" Padding="20" Height="200" VerticalAlignment="Top">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -105,19 +189,65 @@
                             <TextBlock Text="Número"/>
                             <TextBlock Text="Capacidad" Grid.Row="1"/>
                             <TextBlock Text="Disponible" Grid.Row="2"/>
-                            <TextBox x:Name="numeroSala_TextBlock" Grid.Column="1" Text="{Binding SalaFormulario.Numero, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource salas_textBox_Style}"/>
-                            <TextBox x:Name="capacidadSala_TextBlock" Grid.Column="2" Grid.Row="1" Text="{Binding SalaFormulario.Capacidad, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource salas_textBox_Style}"/>
-                            <TextBox x:Name="disponibleSala_TextBlock" Grid.Column="2" Grid.Row="2" Text="{Binding SalaFormulario.Disponible, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource salas_textBox_Style}"/>
-                            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Row="3" HorizontalAlignment="Right">
-                                <Button Content="Modificar" Command="local:CustomCommands.ModificarSala" Style="{StaticResource salas_button_Style}" Margin="0,0,5,0"/>
-                                <Button Content="Añadir" Command="local:CustomCommands.AñadirSala" Style="{StaticResource salas_button_Style}"/>
-                            </StackPanel>
+                            <TextBox x:Name="numeroSala_TextBlock" Grid.Column="1" Text="{Binding SalaFormulario.Numero, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource form_textBox_Style}"/>
+                            <TextBox x:Name="capacidadSala_TextBlock" Grid.Column="2" Grid.Row="1" Text="{Binding SalaFormulario.Capacidad, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource form_textBox_Style}"/>
+                            <TextBox x:Name="disponibleSala_TextBlock" Grid.Column="2" Grid.Row="2" Text="{Binding SalaFormulario.Disponible, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource form_textBox_Style}"/>
+                            <Button Content="Guardar" Command="local:CustomCommands.GuardarSala" Style="{StaticResource commands_button_Style}" Margin="0,0,5,0" Grid.ColumnSpan="2" Grid.Row="3"/>
                         </Grid>
                     </Border>
-                    
-                    
                 </Grid>
             </TabItem>
+            <TabItem Header="Gestión Sesiones">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                            <Button Content="Modificar" Command="local:CustomCommands.ModificarSesion" Style="{StaticResource commands_button_Style}" Margin="0,0,5,0"/>
+                            <Button Content="Añadir" Command="local:CustomCommands.AñadirSesion" Style="{StaticResource commands_button_Style}" Margin="0,0,5,0"/>
+                            <Button Content="Eliminar" Command="local:CustomCommands.EliminarSesion" Style="{StaticResource commands_button_Style}"/>
+                        </StackPanel>
+                        <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ItemTemplate="{StaticResource RF3}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding Path=ListaSesiones}" SelectedItem="{Binding Path=SesionSeleccionada}"
+                         Padding="5" Margin="0,0,30,5">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel></WrapPanel>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </DockPanel>
+
+                    <Border Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1" Padding="20" Height="200" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="ID Película"/>
+                            <TextBlock Text="ID Sala" Grid.Row="1"/>
+                            <TextBlock Text="Hora" Grid.Row="2"/>
+                            <TextBox x:Name="peliculaSesion_TextBlock" Grid.Column="1" Text="{Binding SesionFormulario.Pelicula, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource form_textBox_Style}"/>
+                            <TextBox x:Name="salaSesion_TextBlock" Grid.Column="2" Grid.Row="1" Text="{Binding SesionFormulario.Sala, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource form_textBox_Style}"/>
+                            <TextBox x:Name="horaSesion_TextBlock" Grid.Column="2" Grid.Row="2" Text="{Binding SesionFormulario.Hora, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource form_textBox_Style}"/>
+                            <Button Content="Guardar" Command="local:CustomCommands.GuardarSesion" Style="{StaticResource commands_button_Style}" Margin="0,0,5,0" Grid.ColumnSpan="2" Grid.Row="3"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
         </TabControl>
         
     </Grid>

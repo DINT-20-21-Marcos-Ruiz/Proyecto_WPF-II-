@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_WPF_II_
 {
+    public enum Modo { INSERT,UPDATE }
     class MainWindowVM : INotifyPropertyChanged
     {
         public Pelicula PeliculaSeleccionada { get; set; }
@@ -23,17 +24,26 @@ namespace Proyecto_WPF_II_
 
         public Sesion SesionSeleccionada { get; set; }
         public ObservableCollection<Sesion> ListaSesiones { get; set; }
+        public Sesion SesionFormulario { get; set; }
+
+        public Modo Accion { get; set; }
 
         private readonly BaseDatosService _bbdd;
         private DateTime ultimaFecha;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+ 
         public MainWindowVM()
         {
             _bbdd = new BaseDatosService();
             ComprobarFecha();
             ListaPeliculas = ListaPeliculasObv;
-
+            ListaSalas = _bbdd.ObtenerSalas();
+            ListaSesiones = _bbdd.ObtenerSesiones();
             SalaFormulario = new Sala();
+            SesionFormulario = new Sesion();
+
+            Accion = Modo.INSERT;
         }
 
         public ObservableCollection<Pelicula> GetPeliculas()
@@ -59,16 +69,24 @@ namespace Proyecto_WPF_II_
         public void AñadirSala()
         {
             SalaFormulario = new Sala();
-            _bbdd.InsertarSala(SalaFormulario);
-            SalaFormulario = new Sala();
-
-            ListaSalas = _bbdd.ObtenerSalas();
+            Accion = Modo.INSERT;
         }
         public void ModificarSala()
         {
             SalaFormulario = new Sala(SalaSeleccionada);
-            _bbdd.ModificarSala(SalaFormulario);
-
+            Accion = Modo.UPDATE;
+        }
+        public void GuardarCambioSala()
+        {
+            if(Accion == Modo.INSERT)
+            {
+                _bbdd.InsertarSala(SalaFormulario);
+                SalaFormulario = new Sala();
+            }
+            else
+            {
+                _bbdd.ModificarSala(SalaFormulario);
+            }
             ListaSalas = _bbdd.ObtenerSalas();
         }
         public Boolean ComprobarNumSala(string num)
@@ -80,15 +98,60 @@ namespace Proyecto_WPF_II_
         {
             return (SalaFormulario.Numero != "" && SalaFormulario.Capacidad > 0);
         }
-        public Boolean HayPersonaSeleccionada()
+        public Boolean HaySalaSeleccionada()
         {
             return SalaSeleccionada != null;
         }
 
+        //SESIONES ------------------------------------------------------->
+        public void AñadirSesion()
+        {
+            SesionFormulario = new Sesion();
+            Accion = Modo.INSERT;
+        }
+        public void ModificarSesion()
+        {
+            SesionFormulario = new Sesion(SesionSeleccionada);
+            Accion = Modo.UPDATE;
+        }
+        public void EliminarSesion()
+        {
+            _bbdd.DeleteSesion(SesionSeleccionada);
+            ListaSesiones = _bbdd.ObtenerSesiones();
+        }
+        public void GuardarCambioSesion()
+        {
+            if (Accion == Modo.INSERT)
+            {
+                _bbdd.InsertarSesion(SesionFormulario);
+                SesionFormulario = new Sesion();
+            }
+            else
+            {
+                _bbdd.ModificarSesion(SesionFormulario);
+            }
+            ListaSesiones = _bbdd.ObtenerSesiones();
+        }
+        public Boolean SalasDisponibles(string sala)
+        {
+            if (_bbdd.ComprobarSalaDisponible(sala)) return true;
+            else return false;
+        }
+        public Boolean MaxSesionesAsociadas(string sala)
+        {
+            if (_bbdd.ComprobarNumSesiones(sala) >= 3) return true;
+            else return false;
+        }
+        public Boolean SesionFormOk()
+        {
+            return (SesionFormulario.Pelicula >= 0 && SesionFormulario.Sala >= 0 && SesionFormulario.Hora != "") ;
+        }
+        public Boolean HaySesionSeleccionada()
+        {
+            return SesionSeleccionada != null;
+        }
 
 
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

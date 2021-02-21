@@ -16,6 +16,8 @@ namespace Proyecto_WPF_II_.POJO
 
         public Sala()
         {
+            Numero = "";
+            Capacidad = 0;
             Disponible = true;
         }
         public Sala(int idSala, string numero, int capacidad, bool disponible)
@@ -35,5 +37,6 @@ namespace Proyecto_WPF_II_.POJO
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }
