@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proyecto_WPF(II)", "Proyecto_WPF(II)\Proyecto_WPF(II).csproj", "{DF5F8964-7ACD-4436-A88F-94D2EE3AE4D8}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Cartelera Setup", "Cartelera Setup\Cartelera Setup.vdproj", "{1BCEA724-D896-4AEB-808E-74BA6B12BAB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{DF5F8964-7ACD-4436-A88F-94D2EE3AE4D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF5F8964-7ACD-4436-A88F-94D2EE3AE4D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF5F8964-7ACD-4436-A88F-94D2EE3AE4D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BCEA724-D896-4AEB-808E-74BA6B12BAB0}.Debug|Any CPU.ActiveCfg = Debug
+		{1BCEA724-D896-4AEB-808E-74BA6B12BAB0}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

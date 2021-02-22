@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Proyecto_WPF_II_"
         xmlns:clases="clr-namespace:Proyecto_WPF_II_.POJO"
         mc:Ignorable="d"
-        Title="Gestión Cine" Height="600" Width="900" Icon="Film.ico">
+        Title="Gestión Cine" Height="600" MinHeight="500" Width="900" MinWidth="760" Icon="Film.ico">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.AñadirSala"
                         Executed="AñadirSala_Executed">
@@ -34,9 +34,12 @@
                         Executed="GuardarSesion_Executed"
                         CanExecute="GuardarSesion_CanExecute">
         </CommandBinding>
+        <CommandBinding Command="local:CustomCommands.AñadirEntradas"
+                        Executed="AñadirEntradas_Executed">
+        </CommandBinding>
     </Window.CommandBindings>
     <Window.Resources>
-        <Style TargetType="TextBlock" x:Key="cartelera_TextBlock_Style">
+        <Style TargetType="TextBlock" x:Key="cartelera_TextBlock_Style" >
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Foreground" Value="#FF55AA"/>
@@ -54,12 +57,18 @@
             <Setter Property="Foreground" Value="#FFFFBD6D"/>
             <Setter Property="FontFamily" Value="Verdana"/>
         </Style>
-        <Style TargetType="TextBox" x:Key="form_textBox_Style">
+        <Style TargetType="TextBox" x:Key="form_textBox_Style" BasedOn="{StaticResource MaterialDesignTextBox}">
             <Setter Property="Height" Value="20"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
-        <Style TargetType="Button" x:Key="commands_button_Style">
+        <Style TargetType="TextBox" x:Key="ventas_textBox_Style" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Width" Value="150"/>
             <Setter Property="Height" Value="20"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="Button" x:Key="commands_button_Style" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="Height" Value="25"/>
             <Setter Property="Width" Value="80"/>
         </Style>
         <DataTemplate DataType="{x:Type clases:Pelicula}" x:Key="RF1">
@@ -127,6 +136,30 @@
                     <TextBlock Text="{Binding Pelicula}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="1"/>
                     <TextBlock Text="{Binding Sala}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="2"/>
                     <TextBlock Text="{Binding Hora}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="3"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type clases:Venta}" x:Key="RF4">
+            <Border Width="200" Height="150" Margin="5" BorderThickness="1" BorderBrush="Firebrick" Padding="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="ID Venta:" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="ID Sesion:" Grid.Row="1" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="Cantidad:" Grid.Row="2" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="Pago:" Grid.Row="3" Style="{StaticResource sesiones_TextBlock_Style}"/>
+                    <TextBlock Text="{Binding IdVenta}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1"/>
+                    <TextBlock Text="{Binding Sesion}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="1"/>
+                    <TextBlock Text="{Binding Cantidad}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="2"/>
+                    <TextBlock Text="{Binding Pago}"  Style="{StaticResource sesiones_TextBlock_Style}" Grid.Column="1" Grid.Row="3"/>
                 </Grid>
             </Border>
         </DataTemplate>
@@ -246,6 +279,40 @@
                         </Grid>
                     </Border>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Trabajador Taquilla">
+                <DockPanel Margin="10">
+                    <Button DockPanel.Dock="Bottom" Height="40" Content="Añadir entradas" FontSize="20" Margin="0,10,0,0"/>
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="190"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="190"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="190"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="ID Sesion"/>
+                        <TextBox x:Name="idSesion_textBox" Grid.Column="1" Text="{Binding VentaFormulario.IdSesion, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ventas_textBox_Style}" />
+                        <TextBlock Text="Cantidad" Grid.Column="2"/>
+                        <TextBox x:Name="cantidad_textBox" Grid.Column="3" Style="{StaticResource ventas_textBox_Style}" Text="{Binding VentaFormulario.Cantidad, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Pago" Grid.Column="4"/>
+                        <ComboBox x:Name="pago_ComboBox" Grid.Column="5" HorizontalAlignment="Left" Width="150" SelectedValue="{Binding VentaFormulario.Pago, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                    <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ItemTemplate="{StaticResource RF4}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding Path=ListaVentas}" SelectedItem="{Binding Path=VentaSeleccionada}"
+                         Padding="5" Margin="0,0,0,10">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel></WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </DockPanel>
             </TabItem>
 
         </TabControl>

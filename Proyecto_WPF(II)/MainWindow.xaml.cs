@@ -20,12 +20,15 @@ namespace Proyecto_WPF_II_
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<String> modoCampo = new List<String> { "Efectivo", "Tarjeta", "Bizum" };
         MainWindowVM _vm;
         public MainWindow()
         {
+            //ESTÁ UN POCO DESCUADRADO LOS TEXTBOX/BUTTON DEBIDO AL MATERIAL DESIGN
             _vm = new MainWindowVM();
             InitializeComponent();
             DataContext = _vm;
+            pago_ComboBox.ItemsSource = modoCampo;
         }
 
         //SALA ----------------------------------------------------------------------------->
@@ -97,6 +100,13 @@ namespace Proyecto_WPF_II_
         private void GuardarSesion_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = _vm.SesionFormOk();
+        }
+
+
+        //VENTAS ----------------------------------------------------------------------------->
+        private void AñadirEntradas_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            _vm.AñadirEntrada();
         }
 
     }

@@ -267,7 +267,7 @@ namespace Proyecto_WPF_II_
             _conexion.Open();
             _comando = _conexion.CreateCommand();
 
-            _comando.CommandText = "INSERT INTO ventas VALUES (@sesion,@cantidad,@pago)";
+            _comando.CommandText = "INSERT INTO ventas VALUES (null,@sesion,@cantidad,@pago)";
             _comando.Parameters.Add("@sesion", SqliteType.Integer);
             _comando.Parameters.Add("@cantidad", SqliteType.Integer);
             _comando.Parameters.Add("@pago", SqliteType.Text);
@@ -277,6 +277,31 @@ namespace Proyecto_WPF_II_
             _comando.ExecuteNonQuery();
 
             _conexion.Close();
+        }
+
+        public ObservableCollection<Venta> ObtenerVentas()
+        {
+            ObservableCollection<Venta> resultado = new ObservableCollection<Venta>();
+            _conexion.Open();
+            _comando = _conexion.CreateCommand();
+            _comando.CommandText = "SELECT * FROM ventas";
+            SqliteDataReader lector = _comando.ExecuteReader();
+
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    int idVenta = lector.GetInt32(0);
+                    int sesion = lector.GetInt32(1);
+                    int cantidad = lector.GetInt32(2);
+                    string pago = lector.GetString(3);
+                    resultado.Add(new Venta(idVenta, sesion, cantidad, pago));
+                }
+            }
+            lector.Close();
+            _conexion.Close();
+
+            return resultado;
         }
 
 

@@ -65,6 +65,14 @@ namespace Proyecto_WPF_II_
             {
             }
             );
+        public static readonly RoutedUICommand AñadirEntradas = new RoutedUICommand(
+            "AñadirEntradas",
+            "AñadirEntradas",
+            typeof(CustomCommands),
+            new InputGestureCollection
+            {
+            }
+            );
 
 
     }

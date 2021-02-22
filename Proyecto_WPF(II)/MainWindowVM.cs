@@ -26,6 +26,10 @@ namespace Proyecto_WPF_II_
         public ObservableCollection<Sesion> ListaSesiones { get; set; }
         public Sesion SesionFormulario { get; set; }
 
+        public Venta VentaSeleccionada { get; set; }
+        public ObservableCollection<Venta> ListaVentas { get; set; }
+        public Venta VentaFormulario { get; set; }
+
         public Modo Accion { get; set; }
 
         private readonly BaseDatosService _bbdd;
@@ -42,6 +46,7 @@ namespace Proyecto_WPF_II_
             ListaSesiones = _bbdd.ObtenerSesiones();
             SalaFormulario = new Sala();
             SesionFormulario = new Sesion();
+            VentaFormulario = new Venta();
 
             Accion = Modo.INSERT;
         }
@@ -151,7 +156,13 @@ namespace Proyecto_WPF_II_
             return SesionSeleccionada != null;
         }
 
-
+        //VENTAS ------------------------------------------------------->
+        public void AñadirEntrada()
+        {
+            _bbdd.InsertarVenta(VentaFormulario);
+            VentaFormulario = new Venta();
+            ListaVentas = _bbdd.ObtenerVentas();
+        }
 
     }
 }
